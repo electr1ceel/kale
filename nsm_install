@@ -2814,7 +2814,7 @@ sudo mv /root/reference.config /etc/suricata
 ########################
 # set date time to local
 ########################
-#sudo dpkg-reconfigure tzdata
+sudo dpkg-reconfigure tzdata
 #sudo set_timezone
 
 ##############
