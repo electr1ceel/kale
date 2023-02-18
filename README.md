@@ -43,6 +43,11 @@ sudo tail -f /var/log/suricata/fast.log | grep wDrop
 
 sudo tail -f /var/log/suricata/fast.log
 ```
+```
+sudo cat /var/log/suricata/fast.log | grep wDrop
+
+sudo cat /var/log/suricata/fast.log
+```
 
 ## Deploy
 
