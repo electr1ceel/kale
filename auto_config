@@ -1226,7 +1226,8 @@ host-mode: auto
 # Number of packets preallocated per thread. The default is 1024. A higher number 
 # will make sure each CPU will be more easily kept busy, but may negatively 
 # impact caching.
-max-pending-packets: 1024
+#max-pending-packets: 1024
+max-pending-packets: 2048
 
 # Runmode the engine should use. Please check --list-runmodes to get the available
 # runmodes for each packet acquisition method. Default depends on selected capture
@@ -1618,7 +1619,8 @@ decoder:
 # If the argument specified is 0, the engine uses an internally defined
 # default limit.  On not specifying a value, we use no limits on the recursion.
 detect:
-  profile: medium
+#  profile: medium
+  profile: high
   custom-values:
     toclient-groups: 3
     toserver-groups: 25
