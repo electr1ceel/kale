@@ -28,7 +28,7 @@ cd /root/kale
 nano nsm.conf
 chmod +x nsm_install
 sudo ./nsm_install
-sudoo reboot
+sudo reboot
 ```
 
 ## Usage
