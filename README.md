@@ -14,6 +14,7 @@
 
 - No UI
 - Log marked with "wDrop" is susposed to be blocked by rule  
+- Auto update  
  
 ## Install
 
