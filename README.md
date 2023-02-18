@@ -3,7 +3,7 @@
 ## Main Components
 
 - Suricata 6.0.10  
-- Hyperscan 5.4.0 (Ubuntu 22.04 LTS)  
+- Hyperscan 5.4.0   
 - Ubuntu Server 22.04 LTS  
 
 ## Hardware Requirement
@@ -15,6 +15,10 @@
 - No UI
 - Log marked with "wDrop" is susposed to be blocked by rule  
 - Auto update  
+ 
+ ## License
+ 
+ Kale is released under GPLv3 and is developed by Samiux.
  
 ## Install
 
@@ -36,6 +40,8 @@ sudo reboot
 
 ```bash
 sudo tail -f /var/log/suricata/fast.log | grep wDrop
+
+sudo tail -f /var/log/suricata/fast.log
 ```
 
 ## Deploy
