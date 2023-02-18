@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# check if root
+if [ "$(id -u)" != "0" ]; then
+	echo "Sorry, you don't have root privileges to run this script."
+	exit 1
+fi
+
+# check if internet connect is available
+ping -c1 google.com 2>/dev/null 1>/dev/null
+if [ "$?" -ne 0 ]
+then
+	# for china users only
+        ping -c1 baidu.com 2>/dev/null 1>/dev/null
+        if [ "$?" -ne 0 ]
+        then
+                echo "Sorry, you cannot access internet."
+                exit 1
+        fi 
+fi
+
+sudo nsm_cleanlogs
+sleep 2
+sudo /etc/croissants/conf.d/auto_update
+sleep 180
+sudo nsm_rules_update
+#sleep 300
+#sudo auto_update_ubuntu

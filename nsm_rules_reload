@@ -1,0 +1,7 @@
+#!/bin/bash
+# Author   : Samiux (https://samiux.github.io)
+# Date     : JUL 20, 2017
+# License  : GPLv3 (Open Source)
+
+#sudo kill -USR2 $(pidof suricata)
+sudo suricatasc -c ruleset-reload-nonblocking

@@ -1,0 +1,7 @@
+[Unit]
+Description="Run update script at startup"
+
+[Service]
+Type=oneshot
+ExecStart=reboot_run_update
+TimeoutStartSec=0

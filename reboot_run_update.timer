@@ -1,0 +1,9 @@
+[Unit]
+Description="Run update script after 5 minutes of boot"
+After=network.target
+
+[Timer]
+OnBootSec=5min
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,137 @@
+#!/bin/bash
+# Author   : Samiux (https://samiux.github.io)
+# Date     : DEC 10, 2022
+# License  : GPLv3 (Open Source)
+
+# load nsm.conf
+. /etc/croissants/conf.d/nsm.conf
+
+# for self-sign cert rule
+cd /tmp
+git clone https://github.com/StamusNetworks/stamus-luajit-scripts.git
+#sudo cp stamus-luajit-scripts/*.lua /etc/suricata/rules/
+sudo cp stamus-luajit-scripts/*.lua /var/lib/suricata/rules/
+
+#
+# blocklist.de
+#
+cd /tmp
+wget https://lists.blocklist.de/lists/dnsbl/allinone.list -O /tmp/allinone.list
+if [ -s /tmp/allinone.list ]
+then
+	sed 's/:.*//' /tmp/allinone.list | sed -e '/^\s*$/d' | sort -u | sed -e 's/$/,1,10/' > /var/lib/suricata/rules/iprep/blocklist.de.blacklist
+fi
+
+#
+# TOR Exit Nodes
+#
+# DO NOT fetch this url more than once within 30 minutes!
+cd /tmp
+wget https://www.dan.me.uk/torlist/?exit -O TorBulkExitList
+if [ -s /tmp/TorBulkExitList ]
+then
+	grep -Eo '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)' /tmp/TorBulkExitList > /tmp/ip.txt
+	cat /tmp/ip.txt | sort -u | sed -e 's/$/,2,10/' > /var/lib/suricata/rules/iprep/tor.torexitnode
+fi
+
+#
+# idps.rules
+#
+cd /tmp
+wget https://github.com/samiux/update-croissants/raw/master/rules/idps.rules -O /tmp/idps.rules
+if [ -s /tmp/idps.rules ]
+then
+	sudo cp /tmp/idps.rules /var/lib/suricata/rules/
+fi
+
+#
+# scanners.rules
+#
+cd /tmp
+wget https://github.com/samiux/update-croissants/raw/master/rules/scanners.rules -O /tmp/scanners.rules
+if [ -s /tmp/scanners.rules ]
+then
+	sudo cp /tmp/scanners.rules /var/lib/suricata/rules/
+fi
+
+#
+# malicious.rules
+#
+cd /tmp
+wget https://github.com/samiux/update-croissants/raw/master/rules/malicious.rules -O /tmp/malicious.rules
+if [ -s /tmp/malicious.rules ]
+then
+        sudo cp /tmp/malicious.rules /var/lib/suricata/rules/
+fi
+
+cd /tmp
+wget https://github.com/samiux/update-croissants/raw/master/rules/reputation.blacklist -O /tmp/reputation.blacklist
+if [ -s /tmp/reputation.blacklist ]
+then
+	sudo cp /tmp/reputation.blacklist /var/lib/suricata/rules/iprep/
+fi
+
+cd /tmp
+wget https://github.com/samiux/update-croissants/raw/master/rules/malicious.url -O /tmp/malicious.url
+if [ -s /tmp/malicious.url ]
+then
+	sudo cp /tmp/malicious.url /var/lib/suricata/rules/
+fi
+
+#
+# malware_md5
+#
+#cd /tmp
+#wget https://github.com/samiux/update-croissants/raw/master/rules/malware_md5 -O /tmp/malware_md5
+#if [ -s /tmp/malware_md5 ]
+#then
+#	sudo cp /tmp/malware_md5 /var/lib/suricata/rules/
+#fi
+
+#
+# various malware sha1 and sha256 checksum
+#
+#cd /tmp
+#wget https://github.com/samiux/update-croissants/raw/master/rules/malware_sha1 -O /tmp/malware_sha1
+#if [ -s /tmp/malware_sha1 ]
+#then
+#  sudo cp /tmp/malware_sha1 /var/lib/suricata/rules/
+#fi
+
+#cd /tmp
+#wget https://github.com/samiux/update-croissants/raw/master/rules/malware_sha256 -O /tmp/malware_sha256
+#if [ -s /tmp/malware_sha256 ]
+#then
+#  sudo cp /tmp/malware_sha256 /var/lib/suricata/rules/
+#fi
+
+##############
+# bsdly.net bruteforcers list
+##############
+
+cd /tmp
+wget https://home.nuug.no/~peter/bruteforcers.txt
+
+if [ -s /tmp/bruteforcers.txt ]
+then
+	sed '/^#/d' /tmp/bruteforcers.txt | cut -c 4- | sed -e '/^$/d' | sort -u | sed -e 's/$/,1,10/' > /var/lib/suricata/rules/iprep/bruteforcers.blacklist
+fi
+
+# cleaning up
+sudo rm -R stamus-luajit-scripts
+sudo rm /tmp/*.list
+sudo rm /tmp/*.blacklist
+sudo rm /tmp/*.rules*
+sudo rm /tmp/*.url
+sudo rm /tmp/TorBulkExitList
+sudo rm /tmp/ip.txt
+sudo rm /tmp/bruteforcers.txt
+cd ~
+
+# loading rules
+sudo suricata-update --no-test
+#sudo kill -USR2 $(pidof suricata)
+sudo suricatasc -c ruleset-reload-nonblocking
+
+# workaround to fix minor bug of suricata for memory leaking on every reload (-USR2)
+sudo sync; sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'

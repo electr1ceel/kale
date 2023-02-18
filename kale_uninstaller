@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# check if root
+if [ "$(id -u)" != "0" ]; then
+	echo "Sorry, you don't have root privileges to run this script."
+	exit 1
+fi
+
+sudo /etc/croissants/conf.d/resetfirewall
+sudo rm -R /etc/croissants
+sudo rm /usr/bin/reboot_run_update
+sudo rm /usr/bin/nsm_rules_update
+sudo rm /usr/bin/nsm_rules_reload
+sudo rm /usr/bin/nsm_cleanlogs
+sudo rm /usr/bin/check_drop
+sudo rm /usr/bin/update_ubuntu
+sudo rm /etc/sysctl.d/60-croissants.conf
+sudo rm /etc/sysctl.d/65-ddos.conf
+sudo rm /etc/rc.local*
+sudo rm /etc/logrotate.d/suricata
+sudo rm -R /var/lib/suricata
+sudo rm -R /var/log/suricata
+sudo crontab -r
+sudo systemctl stop reboot_run_update.service
+sudo systemctl stop reboot_run_update.timer
+sudo systemctl stop fail2ban.service
+sudo systemctl stop suricata.service
+sudo systemctl disable reboot_run_update.service
+sudo systemctl disable reboot_run_update.timer
+sudo systemctl disable fail2ban.service
+sudo systemctl disable suricata.service
+sudo systemctl unmask reboot_run_update.service
+sudo systemctl unmask reboot_run_update.timer
+sudo systemctl unmask fail2ban.service
+sudo systemctl unmask suricata.service
+sudo rm /lib/systemd/system/suricata.service
+sudo rm /lib/systemd/system/reboot_run_update.service
+sudo rm /lib/systemd/system/reboot_run_update.timer
+sudo rm -R /etc/suricata
+sudo apt -y remove --purge suricata
+sudo apt -y remove --purge fail2ban
+sudo add-apt-repository -y --remove ppa:oisf/suricata-stable
+sudo apt autoremove
+
+# EOF
