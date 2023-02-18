@@ -24,5 +24,5 @@ sleep 2
 sudo /etc/croissants/conf.d/auto_update
 sleep 180
 sudo nsm_rules_update
-#sleep 300
-#sudo auto_update_ubuntu
+sleep 300
+sudo auto_update_ubuntu
