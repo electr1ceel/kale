@@ -22,9 +22,9 @@ Kale is released under GPLv3 and is developed by Samiux.
 
 ## Change Log
 
-### Version 6.0.10.0 (Latest, Stable)  
-Released on Feb 18, 2023 (GMT +8)  
-- First released  
+### Version 6.0.10.0 (Latest, Stable)
+Released on Feb 18, 2023 (GMT +8)
+- First released
 
 ## Install
 
