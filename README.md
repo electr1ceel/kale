@@ -18,7 +18,7 @@
  
 ## License
  
- Kale is released under GPLv3 and is developed by Samiux.
+Kale is released under GPLv3 and is developed by Samiux.
 
 ## Change Log
 
