@@ -378,14 +378,14 @@ outputs:
         - nfs
         - smb
         - tftp
-        - ike
+        #- ike
         - dcerpc
         - krb5
-        - bittorrent-dht
+        #- bittorrent-dht
         - snmp
         - rfb
         - sip
-        - quic
+        #- quic
         - dhcp:
             enabled: yes
             # When extended mode is on, all DHCP messages are logged
@@ -960,7 +960,7 @@ app-layer:
       enabled: yes
     snmp:
       enabled: yes
-    ike:
+    ikev2:
       enabled: yes
     tls:
       enabled: yes
@@ -1000,7 +1000,7 @@ app-layer:
       enabled: yes
       # memcap: 64mb
     rdp:
-      #enabled: yes
+      enabled: yes
     ssh:
       enabled: yes
       #hassh: yes
@@ -1227,7 +1227,7 @@ app-layer:
       enabled: yes
 
     sip:
-      #enabled: yes
+      enabled: yes
 
 # Limit for the maximum number of asn1 frames to decode (default 256)
 asn1-max-frames: 256
