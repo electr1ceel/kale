@@ -66,13 +66,13 @@ sudo apt -y autoremove
 ####################
 # essential packages
 ####################
-sudo apt -y install net-tools glances git ethtool fail2ban
+sudo apt -y install net-tools git ethtool fail2ban iftop
 sudo apt -y install linux-tools-common linux-tools-generic
 
 ###############################################
 # installation of suricata and its dependencies
 ###############################################
-sudo apt -y install redis-server software-properties-common
+sudo apt -y install redis-server
 
 # install PPA suricata and its dependencies
 sudo add-apt-repository -y ppa:oisf/suricata-stable
@@ -2743,7 +2743,7 @@ echo "00 04 * * * /etc/croissants/conf.d/auto_update" | sudo tee -a /tmp/mycron
 echo "00 05 * * * /usr/bin/nsm_rules_update" | sudo tee -a /tmp/mycron
 echo "00 06 * * * /usr/bin/auto_update_ubuntu" | sudo tee -a /tmp/mycron
 echo "*/15 * * * * /usr/bin/check_drop" | sudo tee -a /tmp/mycron
-#echo "*/30 * * * * /etc/croissants/conf.d/auto_ip_config" | sudo tee -a /tmp/mycron
+echo "*/30 * * * * /etc/croissants/conf.d/auto_nat_config" | sudo tee -a /tmp/mycron
 sudo crontab /tmp/mycron
 
 ####################
@@ -2755,14 +2755,16 @@ sudo mv /root/nsm.conf /etc/croissants/conf.d/
 sudo mv /root/auto_config /etc/croissants/conf.d/
 sudo mv /root/auto_update /etc/croissants/conf.d/
 
-#sudo mv /root/auto_ip_config /etc/croissants/conf.d/
+sudo mv /root/auto_nat_config /etc/croissants/conf.d/
+sudo mv /root/auto_network_config /etc/croissants/conf.d/
 sudo mv /root/set_timezone /etc/croissants/conf.d/
 #sudo mv /root/sshkey_regen /etc/croissants/conf.d/
 
 sudo chmod +x /etc/croissants/conf.d/auto_config
 sudo chmod +x /etc/croissants/conf.d/auto_update
 
-#sudo chmod +x /etc/croissants/conf.d/auto_ip_config
+sudo chmod +x /etc/croissants/conf.d/auto_nat_config
+sudo chmod +x /etc/croissants/conf.d/auto_network_config
 sudo chmod +x /etc/croissants/conf.d/set_timezone
 #sudo chmod +x /etc/croissants/conf.d/sshkey_regen
 
@@ -2846,6 +2848,8 @@ sudo systemctl start reboot_run_update.timer
 
 sudo systemctl enable fail2ban.service
 sudo systemctl start fail2ban.service
+
+sudo netplan apply
 
 # clean up
 sudo rm /root/nsm_install
