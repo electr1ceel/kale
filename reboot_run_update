@@ -24,5 +24,6 @@ sleep 2
 sudo /etc/croissants/conf.d/auto_update
 sleep 180
 sudo nsm_rules_update
-sleep 300
+sleep 180
 sudo auto_update_ubuntu
+sudo /etc/croissants/conf.d/set_timezone
