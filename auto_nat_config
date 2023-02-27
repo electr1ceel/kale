@@ -27,3 +27,5 @@ then
 		fi
 	fi
 fi
+
+sudo netplan apply
