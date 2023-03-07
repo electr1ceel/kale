@@ -1,5 +1,8 @@
 # Kale 羽衣甘蓝 - Intrusion Detection System  侦测入侵系统 (Port Mirroring)
 
+# DISCONTINUED - Deprecated
+This project is discontinued.  Please refer to ["Rosemary"](https://github.com/samiux/rosemary) or ["Garland"](https://github.com/samiux/garland) projects when necessary.  
+
 ## Main Components
 
 - Suricata 6.0.10  
